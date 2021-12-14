@@ -1,23 +1,26 @@
-import logo from './logo.svg';
+import XLSX from 'xlsx';
 import './App.css';
 
 function App() {
+  const readExcel = (e) => {
+    const input = e.target;
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const data = reader.result;
+      const workBook = XLSX.read(data, { type: 'binary' });
+      workBook.SheetNames.forEach((sheetName) => {
+        console.log('SheetName: ' + sheetName);
+        const rows = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
+        console.log(JSON.stringify(rows));
+      })
+    }
+
+    reader.readAsBinaryString(input.files[0]);
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input type="file" onChange={readExcel}></input>
     </div>
   );
 }
