@@ -1,7 +1,7 @@
+import React from 'react';
 import XLSX from 'xlsx';
-import './App.css';
 
-function App() {
+const ExcelUpload = ({ setData }) => {
   const readExcel = (e) => {
     const input = e.target;
     const reader = new FileReader();
@@ -10,19 +10,26 @@ function App() {
       const data = reader.result;
       const workBook = XLSX.read(data, { type: 'binary' });
       workBook.SheetNames.forEach((sheetName) => {
+
         console.log('SheetName: ' + sheetName);
         const rows = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
-        console.log(JSON.stringify(rows));
+        console.log(rows);
+        setData(rows)
+        // const toHtml = XLSX.utils.sheet_to_html(workBook.Sheets[sheetName], {
+        //   header: ''
+        // });
+
       })
+
     }
 
-    reader.readAsBinaryString(input.files[0]);
+    reader.readAsArrayBuffer(input.files[0]);
   }
   return (
-    <div className="App">
+    <div>
       <input type="file" onChange={readExcel}></input>
     </div>
   );
-}
+};
 
-export default App;
+export default ExcelUpload;
