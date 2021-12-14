@@ -7,8 +7,8 @@ const ExcelTable = ({ data }) => {
     }
     return (
       <tr>
-        {Object.keys(data[0]).map((item) =>
-          <td>{item}</td>
+        {Object.keys(data[0]).map((item, index) =>
+          <td key={index}>{item}</td>
         )}
       </tr>
     )
@@ -19,9 +19,9 @@ const ExcelTable = ({ data }) => {
       return;
     }
     return data.map((item, index) => (
-      <tr>
-        {Object.keys(item).map((key) => (
-          <td>{item[key]}</td>
+      <tr key={index}>
+        {Object.keys(item).map((key, index) => (
+          <td key={index}>{item[key]}</td>
         ))
         }
       </tr>))
